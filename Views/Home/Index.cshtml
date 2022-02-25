@@ -1,0 +1,362 @@
+﻿@model IEnumerable<EffortModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div >
+    <table id="mytable" class="table table-bordered table-sm text-center">
+        <thead>
+            <tr>
+                <th hidden>ID</th>
+                <th data-orderable="false">
+                    <input class="m-2" type="checkbox" id="checkedAll">
+                </th>
+                <th>Date</th>
+                <th>Name</th>
+                <th data-orderable="false">Tower</th>
+                <th data-orderable="false">Activity</th>
+                <th data-orderable="false">Description</th>
+                <th data-orderable="false">Reference</th>
+                <th data-orderable="false">Priority</th>
+                <th data-orderable="false">Hours Spent</th>
+                <th data-orderable="false">Forwarded Team</th>
+                <th data-orderable="false">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr id="tableRow">
+                    <td id="editId" hidden>@obj.Id</td>
+                    <td><input class="editCheck m-2" type="checkbox"></td>
+                    <td>@obj.DateOfActivity.ToString("dd-MM-yyyy")</td>
+                    <td>@obj.Name</td>
+                    <td>@obj.Tower</td>
+                    <td>@obj.Activity</td>
+                    <td>@obj.Description</td>
+                    <td>@obj.Reference</td>
+                    <td>@obj.Priority</td>
+                    <td>@obj.Hours</td>
+                    <td>@obj.ForwardedTeam</td>
+                    <td><a href="javascript:" id="editButton"><i style="font-size: 16px;"
+                            class="bi bi-pencil-square"></i></a></td>
+                </tr>
+            }
+            <tr id="insertRow">
+                <td hidden></td>
+                <td></td>
+                <td>
+                    <input type="text" id="insertDate" class="form-control" placeholder="dd-mm-yy" autocomplete="off"
+                        required>
+                </td>
+                <td>
+                    <select id="insertName" class="form-control" required>
+                        <option value="">select</option>
+                        <option value="Anantha Raja A">Anantha</option>
+                        <option value="Arthi Perumal">Arthi</option>
+                        <option value="Balakrishna PB">Bala</option>
+                        <option value="Bhuvaneshwaran S">Bhuvanesh</option>
+                        <option value="Jayakrishnan V">Jayakrishnan</option>
+                        <option value="Vignesh S">Vignesh</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="insertTower" class="form-control" required>
+                        <option value="Launchpad">Launchpad</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="insertActivity" class="form-control" required>
+                        <option value="">select</option>
+                        <option value="Adhoc Activity">Adhoc Activity</option>
+                        <option value="BAU Support Activity">BAU Support Activity</option>
+                        <option value="Change Creation">Change Creation</option>
+                        <option value="Change Implementation">Change Implementation</option>
+                        <option value="Change validation and Approval">Change validation and Approval</option>
+                        <option value="Customer Meeting">Customer Meeting</option>
+                        <option value="Daily health Check">Daily health Check</option>
+                        <option value="Deployment Rehersals">Deployment Rehersals</option>
+                        <option value="Documentation">Documentation</option>
+                        <option value="Email Co-ordination and Chats">Email Co-ordination and Chats</option>
+                        <option value="Environment Setup">Environment Setup</option>
+                        <option value="Incident Forwarded">Incident Forwarded</option>
+                        <option value="Incident Restored">Incident Restored</option>
+                        <option value="Incident Support">Incident Support</option>
+                        <option value="Internal Meetings">Internal Meetings</option>
+                        <option value="Knowledge Transfer">Knowledge Transfer</option>
+                        <option value="Leave">Leave</option>
+                        <option value="MSR Preparation">MSR Preparation</option>
+                        <option value="NKE/NPR">NKE/NPR</option>
+                        <option value="NPC Development">NPC Development</option>
+                        <option value="Operations Improvement">Operations Improvement</option>
+                        <option value="Periodic Activity">Periodic Activity</option>
+                        <option value="Project work">Project work</option>
+                        <option value="Remedy Queue Monitoring">Remedy Queue Monitoring</option>
+                        <option value="Requests">Requests</option>
+                        <option value="SRP Preparation">SRP Preparation</option>
+                        <option value="WSR Preparation">WSR Preparation</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="insertDescription" class="form-control" autocomplete="off" required>
+                </td>
+                <td>
+                    <input type="text" id="insertReference" autocomplete="off" class="form-control">
+                </td>
+                <td>
+                    <select id="insertPriority" class="form-control">
+                        <option value="">select</option>
+                        <option value="P4">P4</option>
+                        <option value="P3">P3</option>
+                        <option value="P2">P2</option>
+                        <option value="P1">P1</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" autocomplete="off" id="insertHours" class="form-control">
+                </td>
+                <td>
+                    <select id="insertForwardedTeam" class="form-control">
+                        <option value="">select</option>
+                        <option value="2nd Line Blueyonder">2nd Line Blueyonder</option>
+                        <option value="Contact Care Tools Support">Contact Care Tools Support</option>
+                        <option value="Corp Apps Support">Corp Apps Support</option>
+                        <option value="CRM Corp Apps">CRM Corp Apps</option>
+                        <option value="DATA TCS Support">DATA TCS Support</option>
+                        <option value="Discover Support">Discover Support</option>
+                        <option value="ICOMS Team">ICOMS Team</option>
+                        <option value="ISeries - ICOMS Team">ISeries - ICOMS Team</option>
+                        <option value="Middleware Support">Middleware Support</option>
+                        <option value="Mission Control">Mission Control</option>
+                        <option value="MMO Akana Operations">MMO Akana Operations</option>
+                        <option value="MOB - Huawei Support">MOB - Huawei Support</option>
+                        <option value="Pega Support">Pega Support</option>
+                        <option value="Prodapt - OSS">Prodapt - OSS</option>
+                        <option value="SAS Local IT">SAS Local IT</option>
+                        <option value="Service Desk Request">Service Desk Request</option>
+                        <option value="Service Desk Support">Service Desk Support</option>
+                        <option value="Thin Client">Thin Client</option>
+                        <option value="Voice Support">Voice Support</option>
+                    </select>
+                </td>
+                <td>
+                    <a href="javascript:" onclick="insert()" id="insertButton">
+                        <i style="color: blueviolet; font-size: 16px" class="bi bi-plus-square-fill"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table table-bordered table-sm text-center">
+        <thead></thead>
+        <tbody>
+            <tr id="reference" hidden></tr>
+            <tr id="editRow" hidden>
+                <td hidden></td>
+                <td></td>
+                <td>
+                    <input type="text" id="editDate" class="form-control" required>
+                </td>
+                <td>
+                    <select id="editName" class="form-control" required>
+                        <option value="">select</option>
+                        <option value="Anantha Raja A">Anantha</option>
+                        <option value="Arthi Perumal">Arthi</option>
+                        <option value="Balakrishna PB">Bala</option>
+                        <option value="Bhuvaneshwaran S">Bhuvanesh</option>
+                        <option value="Jayakrishnan V">Jayakrishnan</option>
+                        <option value="Vignesh S">Vignesh</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="editTower" class="form-control" required>
+                        <option value="Launchpad">Launchpad</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="editActivity" class="form-control" required>
+                        <option value="">select</option>
+                        <option value="Adhoc Activity">Adhoc Activity</option>
+                        <option value="BAU Support Activity">BAU Support Activity</option>
+                        <option value="Change Creation">Change Creation</option>
+                        <option value="Change Implementation">Change Implementation</option>
+                        <option value="Change validation and Approval">Change validation and Approval</option>
+                        <option value="Customer Meeting">Customer Meeting</option>
+                        <option value="Daily health Check">Daily health Check</option>
+                        <option value="Deployment Rehersals">Deployment Rehersals</option>
+                        <option value="Documentation">Documentation</option>
+                        <option value="Email Co-ordination and Chats">Email Co-ordination and Chats</option>
+                        <option value="Environment Setup">Environment Setup</option>
+                        <option value="Incident Forwarded">Incident Forwarded</option>
+                        <option value="Incident Restored">Incident Restored</option>
+                        <option value="Incident Support">Incident Support</option>
+                        <option value="Internal Meetings">Internal Meetings</option>
+                        <option value="Knowledge Transfer">Knowledge Transfer</option>
+                        <option value="Leave">Leave</option>
+                        <option value="MSR Preparation">MSR Preparation</option>
+                        <option value="NKE/NPR">NKE/NPR</option>
+                        <option value="NPC Development">NPC Development</option>
+                        <option value="Operations Improvement">Operations Improvement</option>
+                        <option value="Periodic Activity">Periodic Activity</option>
+                        <option value="Project work">Project work</option>
+                        <option value="Remedy Queue Monitoring">Remedy Queue Monitoring</option>
+                        <option value="Requests">Requests</option>
+                        <option value="SRP Preparation">SRP Preparation</option>
+                        <option value="WSR Preparation">WSR Preparation</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="editDescription" class="form-control" required>
+                </td>
+                <td>
+                    <input type="text" id="editReference" class="form-control">
+                </td>
+                <td>
+                    <select id="editPriority" class="form-control">
+                        <option value="">select</option>
+                        <option value="P4">P4</option>
+                        <option value="P3">P3</option>
+                        <option value="P2">P2</option>
+                        <option value="P1">P1</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" id="editHours" class="form-control">
+                </td>
+                <td>
+                    <select id="editForwardedTeam" class="form-control">
+                        <option value="">select</option>
+                        <option value="2nd Line Blueyonder">2nd Line Blueyonder</option>
+                        <option value="Contact Care Tools Support">Contact Care Tools Support</option>
+                        <option value="Corp Apps Support">Corp Apps Support</option>
+                        <option value="CRM Corp Apps">CRM Corp Apps</option>
+                        <option value="DATA TCS Support">DATA TCS Support</option>
+                        <option value="Discover Support">Discover Support</option>
+                        <option value="ICOMS Team">ICOMS Team</option>
+                        <option value="ISeries - ICOMS Team">ISeries - ICOMS Team</option>
+                        <option value="Middleware Support">Middleware Support</option>
+                        <option value="Mission Control">Mission Control</option>
+                        <option value="MMO Akana Operations">MMO Akana Operations</option>
+                        <option value="MOB - Huawei Support">MOB - Huawei Support</option>
+                        <option value="Pega Support">Pega Support</option>
+                        <option value="Prodapt - OSS">Prodapt - OSS</option>
+                        <option value="SAS Local IT">SAS Local IT</option>
+                        <option value="Service Desk Request">Service Desk Request</option>
+                        <option value="Service Desk Support">Service Desk Support</option>
+                        <option value="Thin Client">Thin Client</option>
+                        <option value="Voice Support">Voice Support</option>
+                    </select>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-around"">
+                    <a href=" javascript:" id="updateButton"><i style="color: green; font-size: 16px;"
+                            class="bi bi-plus-circle-fill"></i></a>
+                        <a href="javascript:" id="cancelButton"><i style="color: red; font-size: 16px;"
+                                class="bi bi-x-circle-fill"></i></a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    (function () {
+        var currentTr;
+
+        document.querySelectorAll("a#editButton").forEach(a => {
+            a.addEventListener("click", function () {
+                if (currentTr) {
+                    cancelButton.click();
+                }
+
+                currentTr = a.closest("tr");
+
+                currentTr.insertAdjacentElement('beforebegin', editRow);
+
+                currentTr.hidden = true;
+
+                editId.value = currentTr.cells[0].innerText.trim();
+                editDate.value = currentTr.cells[2].innerText.trim();
+                editName.value = currentTr.cells[3].innerText.trim();
+                editActivity.value = currentTr.cells[5].innerText.trim();
+                editDescription.value = currentTr.cells[6].innerText.trim();
+                editReference.value = currentTr.cells[7].innerText.trim();
+                editPriority.value = currentTr.cells[8].innerText.trim();
+                editHours.value = currentTr.cells[9].innerText.trim();
+                editForwardedTeam.value = currentTr.cells[10].innerText.trim();
+
+                /*console.log("id: "+editId.value);
+                console.log("date: "+editDate.value);
+                console.log("Name: "+editName.value);
+                console.log("Activity: "+editActivity.value);*/
+
+                editRow.hidden = false;
+            });
+        });
+
+        cancelButton.addEventListener("click", function () {
+            console.log("cancel clicked");
+            editRow.hidden = true;
+            
+            reference.insertAdjacentElement('beforebegin', editRow);
+            if(currentTr)
+                currentTr.hidden = false;
+        });
+
+        updateButton.addEventListener("click", function () {
+
+            if (editDate.value == null || editDate.value == '') {
+                console.log("Date required");
+                toastr.warning("Date is required");
+            }
+            if (editName.value == null || editName.value == '') {
+                console.log("Name required");
+                toastr.warning("Name is required");
+            }
+            if (editActivity.value == null || editActivity.value == '') {
+                console.log("Activity required");
+                toastr.warning("Activity is required");
+            }
+            if (editDescription.value == null || editDescription.value == '') {
+                console.log("Description required");
+                toastr.warning("Description is required");
+            }
+            if (editHours.value == null || editHours.value == '') {
+                console.log("Hours required");
+                toastr.warning("Hours spent is required");
+            }
+            else {
+
+                editRow.hidden = true;
+
+                currentTr.cells[2].innerText = editDate.value;
+                currentTr.cells[3].innerText = editName.value;
+                currentTr.cells[5].innerText = editActivity.value;
+                currentTr.cells[6].innerText = editDescription.value;
+                currentTr.cells[7].innerText = editReference.value;
+                currentTr.cells[8].innerText = editPriority.value;
+                currentTr.cells[9].innerText = editHours.value;
+                currentTr.cells[10].innerText = editForwardedTeam.value;
+
+                update(editId.value);
+
+                currentTr.hidden = false;
+
+            }
+        });
+
+        /*var clickElement = document.getElementById("mytable");
+        document.addEventListener('click',function(event){
+            var isclickInside = clickElement.contains(event.target);
+            if(!isclickInside){
+                //cancelButton.click();
+                console.log("clicked outside");
+            }
+        })*/
+
+    })();
+
+</script>
