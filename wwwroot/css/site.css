@@ -35,3 +35,16 @@ td{
 ::-webkit-scrollbar {
   display: none;
 }
+.insert-margin{
+  margin-left: 25px;
+}
+
+#mytable td, #mytable th{
+  border-collapse: collapse;
+  border: 1px solid;
+  background-color: azure;
+}
+
+#mytable th{
+  background-color:antiquewhite;
+}
