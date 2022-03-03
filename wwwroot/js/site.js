@@ -3,6 +3,11 @@
 
 // Write your JavaScript code.
 (function () {
+    pageLoad();
+})();
+
+function pageLoad(){
+    
     var currentTr;
     var currentTrName;
     var currentTrActivity;
@@ -383,7 +388,7 @@
             reference.insertAdjacentElement('beforebegin', editRowForwardedTeam);
         }
     });
-})();
+}
 
 $(document).ready(function () {
     //console.log("jquery dom")
@@ -403,15 +408,15 @@ $(document).ready(function () {
     $('<button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Delete" onclick="deleteSelected()"><i style="color: red; font-size: 16px;" class="bi bi-trash"></i></button>').appendTo('#mytable_length');
     $('<button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Download" onclick="download()"><i style=" font-size: 16px;" class="bi bi-download"></i></button>').appendTo('#mytable_length');
 
-    var allPages = oTable.cells().nodes();
+    //var allPages = oTable.cells().nodes();
 
     $("#checkedAll").change(function () {
         console.log("clicked")
         if (this.checked) {
-            $('input[type="checkbox"]', allPages).prop('checked', true);
+            $('input[type="checkbox"]').prop('checked', true);
 
         } else {
-            $('input[type="checkbox"]', allPages).prop('checked', false);
+            $('input[type="checkbox"]').prop('checked', false);
         }
     });
 
@@ -538,6 +543,10 @@ function deleteSelected() {
             tableRow = this.closest('tr');
             var id = tableRow.cells[0].innerText.trim();
             onDelete(id);
+            tableRow.remove();
+            if($("#checkedAll").val() == 'on'){
+                $("#checkedAll").prop('checked',false);
+            }
         }
     });
     if (!tableRow)
@@ -564,8 +573,11 @@ function onDelete(tempId) {
             url: "/Home/Delete",
             data: model,
             success: function (_response) {
-                window.location.href = "/Home/Index";
-
+                var rowCount = $("#mytable tr").length;
+                console.log(rowCount);
+                        if(rowCount <= 2){
+                            location.href = "/Home/Index";
+                        }
             }
         }
     )
@@ -578,6 +590,21 @@ function cloneSelected() {
         if (this.checked == true) {
             tableRow = this.closest('tr');
             //updateButton.click();
+
+            $(this).prop('checked',false);
+
+            if($("#checkedAll").val() == 'on'){
+                $("#checkedAll").prop('checked',false);
+            }
+
+            var $tableBody = $('#mytable').find("tbody")
+            var $trLast = $tableBody.find("tr:last")
+
+            var $tr    = $(this).closest('tr');
+            var $clone = $tr.clone();
+            $clone.find(':text').val('');
+            $clone.find(':checkbox:checked').prop('checked',false);
+            $trLast.after($clone);
 
             var model = {
                 DateOfActivity: tableRow.cells[2].innerText.trim(),
@@ -596,7 +623,10 @@ function cloneSelected() {
                     url: "/Home/Add",
                     data: model,
                     success: function (_response) {
-                        location.href = "/Home/Index";
+                        var rowCount = $("#mytable tr").length;
+                        if(rowCount > 11){
+                            location.href = "/Home/Index";
+                        }
                     },
                     error: function(_response){
                         toastr.warning("Save before clone this row!");
