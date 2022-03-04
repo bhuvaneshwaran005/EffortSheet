@@ -2,7 +2,12 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+var path = window.location.pathname;
+var pathArray = path.split("/");
+var action = pathArray[2];
 (function () {
+    console.log(action);
     pageLoad();
 })();
 
@@ -406,8 +411,10 @@ $(document).ready(function () {
     $('<button class="insert-margin btn" data-toggle="tooltip" data-placement="top" title="Click to Save" onclick="saveSelected()"><i style="color: blueviolet; font-size: 16px;" class="bi bi-check-square-fill"></i></button>').appendTo('#mytable_length');
     $('<button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Clone" onclick="cloneSelected()"><i style="color: blue; font-size: 16px;" class="bi bi-window-stack"></i></button>').appendTo('#mytable_length');
     $('<button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Delete" onclick="deleteSelected()"><i style="color: red; font-size: 16px;" class="bi bi-trash"></i></button>').appendTo('#mytable_length');
-    $('<button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Download" onclick="download()"><i style=" font-size: 16px;" class="bi bi-download"></i></button>').appendTo('#mytable_length');
+    $('<button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Download"><i style=" font-size: 16px;" class="bi bi-download"></i></button>').appendTo('#mytable_length');
+    $('<button type="button" id="filterButton" data-toggle="tooltip" data-placement="top" title="Advance filter" class="btn" onclick="openModal()"><i style="color: darkblue; font-size: 16px;" class="bi bi-funnel-fill"></i></button>').appendTo('#mytable_length');
 
+    
     //var allPages = oTable.cells().nodes();
 
     $("#checkedAll").change(function () {
@@ -441,6 +448,15 @@ $(document).ready(function () {
 
 });
 
+function openModal(){
+    console.log("modal opened");
+    $('#myModal').show();
+}
+function closeModal(){
+    console.log("modal closed");
+    $('#myModal').hide();
+}
+
 $(function () {
     $('#editDate').datepicker({
         dateFormat: "dd-mm-yy",
@@ -451,6 +467,16 @@ $(function () {
         dateFormat: "dd-mm-yy",
         changeMonth: true,
         changeYear: true
+    });
+    $('#minDate').datepicker({
+        dateFormat: "dd-mm-yy",
+        changeMonth: true,
+        changeYear: true
+    });
+    $('#maxDate').datepicker({
+        dateFormat: "dd-mm-yy",
+        changeMonth: true,
+        changeYear: true,
     });
 })
 
@@ -576,14 +602,16 @@ function onDelete(tempId) {
                 var rowCount = $("#mytable tr").length;
                 console.log(rowCount);
                         if(rowCount <= 2){
-                            location.href = "/Home/Index";
+                            if(action == "Index")
+                                location.href = "/Home/Index";
+                            else
+                                location.href = "/Home/Filter";
                         }
             }
         }
     )
 }
 
-//todo toastr(save before clone)
 function cloneSelected() {
     let tableRow;
     $(".editCheck").each(function () {
@@ -625,7 +653,11 @@ function cloneSelected() {
                     success: function (_response) {
                         var rowCount = $("#mytable tr").length;
                         if(rowCount > 11){
-                            location.href = "/Home/Index";
+                            if(action == "Index")
+                                location.href = "/Home/Index";
+                            else
+                                location.href = "/Home/Filter";
+                                
                         }
                     },
                     error: function(_response){
@@ -646,6 +678,11 @@ function saveSelected() {
         if (this.checked == true) {
             tableRow = this.closest('tr');
             updateButton.click();
+
+            $(this).prop('checked',false);
+            if($("#checkedAll").val() == 'on'){
+                $("#checkedAll").prop('checked',false);
+            }
 
             var id = tableRow.cells[0].innerText.trim();
             var dateOfActivity = tableRow.cells[2].innerText.trim();
@@ -680,7 +717,7 @@ function saveSelected() {
                         url: "/Home/Edit",
                         data: model,
                         success: function (_response) {
-                            location.href = "/Home/Index";
+                            //location.href = "/Home/Index";
                         }
                     }
                 )
@@ -703,6 +740,25 @@ function download(){
             }
         }
     )
+}
+
+function filter(){
+    closeModal();
+    var model = {
+        Id: 1,
+        startDate : $('#minDate').val(),
+        endDate : $('#maxDate').val(),
+        Name : $('#empName').val()
+    }
+    $.ajax({
+        type:"POST",
+        url: "/Home/PostFilter",
+        data: model,
+        success: function(data){
+            console.log("filtered!");
+            location.href = "/Home/Filter"
+        }
+    })
 }
 
 

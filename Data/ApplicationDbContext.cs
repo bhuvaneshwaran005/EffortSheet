@@ -14,6 +14,8 @@ namespace EffortSheet.Data
         public DbSet<ActivityModel> ActivityList {get; set;}
         public DbSet<TeamModel> TeamList{get; set;}
         public DbSet<PriorityModel> PriorityList{get; set;}
+
+        public DbSet<FilterModel> FilterData {get; set;}
     }
 
 }

@@ -33,6 +33,39 @@ public class HomeController : Controller
         return View(lst);
     }
 
+    public IActionResult Filter()
+    {
+        IEnumerable<NameModel> names = _db.NameList.ToList();
+        ViewBag.nameList = names;
+        IEnumerable<ActivityModel> activities = _db.ActivityList.ToList();
+        ViewBag.activityList = activities;
+        IEnumerable<TeamModel> teams = _db.TeamList.ToList();
+        ViewBag.teamList = teams;
+        IEnumerable<PriorityModel> priorities = _db.PriorityList.ToList();
+        ViewBag.priorityList = priorities;
+
+        var Filter = _db.FilterData.Find(1);
+        IEnumerable<EffortModel> lst;
+
+        if(Filter.startDate != null && Filter.endDate != null){
+            if(Filter.Name == null){
+                lst = _db.EffortTracker.Where(o => o.DateOfActivity >= Filter.startDate && o.DateOfActivity <= Filter.endDate).ToList();
+            }
+            else {
+                lst = _db.EffortTracker.Where(o => o.DateOfActivity >= Filter.startDate && o.DateOfActivity <= Filter.endDate && o.Name == Filter.Name).ToList();
+            }
+        }
+        else{
+            if(Filter.Name == null){
+                return RedirectToAction("Index");
+            }
+            else{
+                lst = _db.EffortTracker.Where(o => o.Name == Filter.Name).ToList();
+            }
+        }        
+        return View(lst);
+    }
+
     [HttpPost]
     public IActionResult Add(EffortModel obj){
         if(ModelState.IsValid){
@@ -95,6 +128,21 @@ public class HomeController : Controller
         return File(Encoding.UTF8.GetBytes(builder.ToString()),"text/csv","EffortTracker_"+DateTime.Now.ToString("MMM")+".csv");
     }
 
+    
+    [HttpPost]
+    public IActionResult PostFilter(FilterModel obj){
+        if(ModelState.IsValid){
+            var Filter = _db.FilterData.Find(obj.Id);
+            Filter.Name = obj.Name;
+            Filter.startDate = obj.startDate;
+            Filter.endDate = obj.endDate;
+
+            _db.FilterData.Update(Filter);
+            _db.SaveChanges();
+            return RedirectToAction("Filter");
+        }
+        return View(obj);
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

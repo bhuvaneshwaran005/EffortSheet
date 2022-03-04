@@ -16326,6 +16326,11 @@
       "FilePath": "d:\\MyProject\\EffortSheet\\Views\\Shared\\_Layout.cshtml",
       "TargetPath": "Views\\Shared\\_Layout.cshtml",
       "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\MyProject\\EffortSheet\\Views\\Home\\Filter.cshtml",
+      "TargetPath": "Views\\Home\\Filter.cshtml",
+      "FileKind": "mvc"
     }
   ],
   "SerializationFormat": "0.2"

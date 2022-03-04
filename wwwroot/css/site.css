@@ -52,3 +52,21 @@ td{
   outline: none;
   box-shadow: none;
 }
+.filter{
+  
+  margin: auto;
+  padding: 2px;
+  width: 99%;
+}
+.card{
+  margin: auto;
+  border: 0;
+    box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.459);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.466);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+    -ms-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+}
+#filterClose{
+  margin-right: 5px;
+  float: right;
+}
