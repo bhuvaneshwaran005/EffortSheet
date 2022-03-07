@@ -404,7 +404,8 @@ $(document).ready(function () {
         //console.log('Page' ); 
     }).DataTable({
         //stateSave: true,
-        "dom": 'l<"toolbar">frtip'
+        "dom": 'l<"toolbar">frtip',
+        "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
     });
 
     
@@ -413,7 +414,13 @@ $(document).ready(function () {
     $('<button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Delete" onclick="deleteSelected()"><i style="color: red; font-size: 16px;" class="bi bi-trash"></i></button>').appendTo('#mytable_length');
     $('<button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Download"><i style=" font-size: 16px;" class="bi bi-download"></i></button>').appendTo('#mytable_length');
     $('<button type="button" id="filterButton" data-toggle="tooltip" data-placement="top" title="Advance filter" class="btn" onclick="openModal()"><i style="color: darkblue; font-size: 16px;" class="bi bi-funnel-fill"></i></button>').appendTo('#mytable_length');
+    $('<button type="button" id="clearFilter" data-toggle="tooltip" data-placement="top" title="Clear filter" class="btn" onclick="clearFilter()"><i style="color: Red; font-size: 16px;" class="bi bi-x-circle-fill"></i></button>').appendTo('#mytable_length');
 
+    if(action != 'Filter'){
+        $("#clearFilter").hide();
+    }else{
+        $("#clearFilter").show();
+    }
     
     //var allPages = oTable.cells().nodes();
 
@@ -455,6 +462,9 @@ function openModal(){
 function closeModal(){
     console.log("modal closed");
     $('#myModal').hide();
+}
+function clearFilter(){
+    location.href = "/Home/Index";
 }
 
 $(function () {
@@ -652,6 +662,7 @@ function cloneSelected() {
                     data: model,
                     success: function (_response) {
                         var rowCount = $("#mytable tr").length;
+                        pageLoad();
                         if(rowCount > 11){
                             if(action == "Index")
                                 location.href = "/Home/Index";
@@ -744,12 +755,26 @@ function download(){
 
 function filter(){
     closeModal();
+
+    var minDate = $('#minDate').val();
+    var maxDate = $('#maxDate').val();
+    if(minDate == '' || maxDate == ''){
+        minDate = null;
+        maxDate = null;
+    }
+    var name = $('#empName').val();
+    if(name == ''){
+        name = null;
+    }
     var model = {
         Id: 1,
-        startDate : $('#minDate').val(),
-        endDate : $('#maxDate').val(),
-        Name : $('#empName').val()
+        startDate : minDate,
+        endDate : maxDate,
+        Name : name
     }
+
+    console.log(model);
+    
     $.ajax({
         type:"POST",
         url: "/Home/PostFilter",
@@ -772,33 +797,3 @@ function filter(){
     //     $(this).toggleClass('editCheck');
     // });
 
-
-
-    
-            // if (!dateOfActivity) {
-            //     console.log('update date:' + editDate.value);
-            //     dateOfActivity = editDate.value;
-            //     updateButton.click();
-            //     name = tableRow.cells[4].innerText.trim();
-            //     tower = tableRow.cells[5].innerText.trim();
-            //     activity = tableRow.cells[6].innerText.trim();
-            //     description = tableRow.cells[7].innerText.trim();
-            //     reference = tableRow.cells[8].innerText.trim();
-            //     priority = tableRow.cells[9].innerText.trim();
-            //     hours = tableRow.cells[10].innerText.trim();
-            //     forwardedTeam = tableRow.cells[11].innerText.trim();
-            // }
-            // let nameFix1 = 'select\nAnantha\nArthi\nBala\nBhuvanesh\nJayakrishnan\nVignesh';
-            // let nameFix2 = "select\n                        Anantha\n                        Arthi\n                        Bala\n                        Bhuvanesh\n                        Jayakrishnan\n                        Vignesh";
-            // if (name == nameFix1 || name == nameFix2) {
-            //     console.log('update name:' + editName.value);
-            //     name = editName.value;
-            //     updateButton.click();
-            //     tower = tableRow.cells[6].innerText.trim();
-            //     activity = tableRow.cells[7].innerText.trim();
-            //     description = tableRow.cells[8].innerText.trim();
-            //     reference = tableRow.cells[9].innerText.trim();
-            //     priority = tableRow.cells[10].innerText.trim();
-            //     hours = tableRow.cells[11].innerText.trim();
-            //     forwardedTeam = tableRow.cells[12].innerText.trim();
-            // }

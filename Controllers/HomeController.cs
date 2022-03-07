@@ -49,10 +49,10 @@ public class HomeController : Controller
 
         if(Filter.startDate != null && Filter.endDate != null){
             if(Filter.Name == null){
-                lst = _db.EffortTracker.Where(o => o.DateOfActivity >= Filter.startDate && o.DateOfActivity <= Filter.endDate).ToList();
+                lst = _db.EffortTracker.Where(o => o.DateOfActivity >= DateTime.Parse(Filter.startDate) && o.DateOfActivity <= DateTime.Parse(Filter.endDate)).ToList();
             }
             else {
-                lst = _db.EffortTracker.Where(o => o.DateOfActivity >= Filter.startDate && o.DateOfActivity <= Filter.endDate && o.Name == Filter.Name).ToList();
+                lst = _db.EffortTracker.Where(o => o.DateOfActivity >= DateTime.Parse(Filter.startDate) && o.DateOfActivity <= DateTime.Parse(Filter.startDate) && o.Name == Filter.Name).ToList();
             }
         }
         else{
@@ -131,17 +131,25 @@ public class HomeController : Controller
     
     [HttpPost]
     public IActionResult PostFilter(FilterModel obj){
-        if(ModelState.IsValid){
+        
             var Filter = _db.FilterData.Find(obj.Id);
-            Filter.Name = obj.Name;
-            Filter.startDate = obj.startDate;
-            Filter.endDate = obj.endDate;
-
+            if(obj.endDate != null && obj.startDate != null){
+                Filter.startDate = obj.startDate;
+                Filter.endDate = obj.endDate;
+            } else{
+                Filter.startDate = null;
+                Filter.endDate = null;
+            }
+            if(obj.Name != null){
+                Filter.Name = obj.Name;
+            } else{
+                Filter.Name = obj.Name;
+            }
+            
             _db.FilterData.Update(Filter);
             _db.SaveChanges();
             return RedirectToAction("Filter");
-        }
-        return View(obj);
+        
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
